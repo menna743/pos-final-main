@@ -1,0 +1,25 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lexend:wght@100..900&display=swap");
+@import "tailwindcss";
+@plugin "daisyui";
+
+* {
+  font-family: "Inter", sans-serif;
+}
+
+@theme {
+  --color-mainGreen: #10b981;
+  --font-lexend: "Lexend", sans-serif;
+  --color-border: #e2e8f0;
+  --color-textDark: #0f172b;
+}
+
+@layer components {
+  .activeGreen {
+    @apply w-full py-3 rounded-2xl flex flex-col gap-1 text-[#90A1B9];
+    @apply hover:bg-mainGreen/10 hover:text-mainGreen;
+  }
+
+  .input {
+    @apply bg-[#F8FAFC] px-12 py-3.5 border border-border rounded-xl;
+  }
+}
