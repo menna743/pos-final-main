@@ -1,5 +1,5 @@
 import { LuUser, LuLock, LuDelete } from 'react-icons/lu';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { domain } from '../store';
 import axios from 'axios';
 import toast from 'react-hot-toast';
@@ -9,7 +9,7 @@ export default function LoginStaff() {
   const [activeInput, setActiveInput] = useState('id');
   const [staffId, setStaffId] = useState('');
   const [pinId, setPinId] = useState('');
-   const naviagte = useNavigate();
+  const navigate = useNavigate();
 
   const keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'backspace', '0'];
 
@@ -34,27 +34,41 @@ export default function LoginStaff() {
   const handleLogin = (event) => {
     event.preventDefault();
     let data = { identifier: staffId, password: pinId };
-     let url = domain + '/api/auth/local';
-     axios.post(url,data)
-     .then((res)=>{
-      toast.success('Login success');
-      let role = res.data.user.system_role;
-      console.log(res.data.user.system_role);
-      // if (role == 'cashier') {
-      //     naviagte('/');
-      //   } else if (role == 'admin') {
-      //     naviagte('/admin');
-      //   } else {
-      //     naviagte('/kitchen');
-      //   }
-      //   sessionStorage.setItem('jwt', res.data.jwt);
-      //   sessionStorage.setItem('user', JSON.stringify(res.data.user));
-     })
-     .catch((err)=>{
-      toast.error('Invalid Login');
-      console.log(err)});
-  
+    let url = domain + '/api/auth/local';
+    axios.post(url, data)
+      .then((res) => {
+        toast.success('Login success');
+        let role = res.data.user.system_role.toLowerCase().trim();
+        console.log('Logged in role:', role);
+        sessionStorage.setItem('jwt', res.data.jwt);
+        sessionStorage.setItem('user', JSON.stringify(res.data.user));
+        if (role == 'cashier') {
+          navigate('/');
+        } else if (role == 'admin') {
+          navigate('/admin');
+        } else {
+          navigate('/kitchen');
+        }
+      })
+      .catch((err) => {
+        toast.error('Invalid Login');
+        console.log(err)
+      });
   }
+
+  useEffect(() => {
+    let user = JSON.parse(sessionStorage.getItem('user')) || {};
+    let role = user?.system_role?.toLowerCase().trim();
+
+    if (role == 'admin') {
+      navigate('/admin');
+    } else if (role == 'cashier') {
+      navigate('/');
+    } else if (role == 'kitchen') {
+      navigate('/kitchen');
+    }
+
+  }, []);
 
 
   return (

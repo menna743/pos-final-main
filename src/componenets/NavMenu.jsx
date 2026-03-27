@@ -1,5 +1,5 @@
 import Logo from '../assets/Background+Shadow.svg';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, Navigate, NavLink } from 'react-router-dom';
 import { FiLogOut } from 'react-icons/fi';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -21,6 +21,13 @@ export default function NavMenu() {
     })
   },[]);
 
+  const handleLogOut = () => {
+      sessionStorage.removeItem('user');
+    localStorage.removeItem('jwt');
+    Navigate('/login');
+  }
+
+
   return (
     <div className="w-24 bg-white border-r border-r-border py-8 flex flex-col">
       <img className="w-23.75" src={Logo} />
@@ -34,7 +41,7 @@ export default function NavMenu() {
         ))}
       </div>
       <div className="w-full flex justify-center py-3">
-        <FiLogOut />
+        <FiLogOut onClick={handleLogOut()} />
       </div>
     </div>
   );

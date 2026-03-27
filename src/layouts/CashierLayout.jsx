@@ -5,10 +5,11 @@ import SideCart from "../componenets/SideCart";
 import { useEffect } from "react";
 
 export default function CashierLayout() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   useEffect(() => {
-    let user = JSON.parse(sessionStorage.getItem('user')) || {};
-    if (user.system_role != 'cashier') {
+    let role = user?.system_role?.toLowerCase().trim();
+
+    if (role !== 'cashier') {
       navigate('/login');
     }
   }, []);
