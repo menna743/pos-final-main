@@ -21,12 +21,13 @@ export default function NavMenu() {
     })
   }, []);
 
-  const handleLogOut = () => {
-    sessionStorage.removeItem('user');
-    localStorage.removeItem('jwt');
-    const navigate = useNavigate();
-    navigate('/login');
-  }
+const navigate = useNavigate();
+
+const handleLogOut = () => {
+  sessionStorage.removeItem('user');
+  sessionStorage.removeItem('jwt');
+  navigate('/login');
+};
 
 
   return (

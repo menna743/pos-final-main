@@ -4,7 +4,7 @@ import { GoPeople } from "react-icons/go";
 import { FiBookOpen } from "react-icons/fi";
 import { LuChartPie } from "react-icons/lu";
 import { FiLogOut } from 'react-icons/fi';
-import { Navigate, NavLink } from 'react-router-dom';
+import { Navigate, NavLink, useNavigate } from 'react-router-dom';
 
 export default function AdminMenu() {
   const categories = [
@@ -14,11 +14,13 @@ export default function AdminMenu() {
     { name: 'Sales Reports', path: 'sales', icon: <LuChartPie /> },
   ];
 
-  const handleLogOut = () => {
-    sessionStorage.removeItem('user');
-    localStorage.removeItem('jwt');
-    Navigate('/login');
-  }
+ const navigate = useNavigate();
+
+const handleLogOut = () => {
+  sessionStorage.removeItem('user');
+  sessionStorage.removeItem('jwt');
+  navigate('/login');
+};
 
   return (
     <div className="w-71.75 bg-white border-r border-r-border flex flex-col">
@@ -34,7 +36,7 @@ export default function AdminMenu() {
           </NavLink>
         ))}
       </div>
-      <div className="w-full h-20 flex px-10 py-3 gap-4 " onClick={handleLogOut()}>
+      <div className="w-full h-20 flex px-10 py-3 gap-4 " onClick={handleLogOut}>
         <span className='text-[24px] text-[#FF2056]'><FiLogOut /></span>
         <p className="text-[16px] font-semibold text-[#FF2056]">Log Out</p>
       </div>
