@@ -35,16 +35,25 @@ export default function LoginStaff() {
     event.preventDefault();
     let data = { identifier: staffId, password: pinId };
     let url = domain + '/api/auth/local';
+
     axios.post(url, data)
       .then((res) => {
         toast.success('Login success');
-        let role = res.data.user.system_role.toLowerCase().trim();
+
+        let user = res.data.user;
+        let role = user.system_role.toLowerCase().trim();
+
         console.log('Logged in role:', role);
+
+        user.system_role = role;
+ 
         sessionStorage.setItem('jwt', res.data.jwt);
-        sessionStorage.setItem('user', JSON.stringify(res.data.user));
-        if (role == 'cashier') {
+        sessionStorage.setItem('user', JSON.stringify(user));
+
+    
+        if (role === 'cashier') {
           navigate('/');
-        } else if (role == 'admin') {
+        } else if (role === 'admin') {
           navigate('/admin');
         } else {
           navigate('/kitchen');
@@ -52,9 +61,9 @@ export default function LoginStaff() {
       })
       .catch((err) => {
         toast.error('Invalid Login');
-        console.log(err)
+        console.log(err);
       });
-  }
+  };
 
   useEffect(() => {
     let user = JSON.parse(sessionStorage.getItem('user')) || {};

@@ -6,13 +6,18 @@ import { useEffect } from "react";
 
 export default function CashierLayout() {
   const navigate = useNavigate();
-  useEffect(() => {
-    let role = user?.system_role?.toLowerCase().trim();
+ useEffect(() => {
+  let storedUser = sessionStorage.getItem('user');
 
-    if (role !== 'cashier') {
-      navigate('/login');
-    }
-  }, []);
+  if (!storedUser) return;
+
+  let user = JSON.parse(storedUser);
+  let role = user?.system_role?.toLowerCase().trim();
+
+  if (role !== 'cashier') {
+    navigate('/login');
+  }
+}, []);
   return (
     <div className="w-full h-full overflow-hidden flex">
       <NavMenu />

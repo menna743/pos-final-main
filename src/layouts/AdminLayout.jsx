@@ -6,8 +6,14 @@ export default function AdminLayout() {
   const navigate = useNavigate();
   
   useEffect(() => {
-  let user = JSON.parse(sessionStorage.getItem('user')) || {};
+  let storedUser = sessionStorage.getItem('user');
+
+  if (!storedUser) return;
+
+  let user = JSON.parse(storedUser);
   let role = user?.system_role?.toLowerCase().trim();
+
+  console.log('AdminLayout role:', role);
 
   if (role !== 'admin') {
     navigate('/login');

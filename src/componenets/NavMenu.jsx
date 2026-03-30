@@ -1,5 +1,5 @@
 import Logo from '../assets/Background+Shadow.svg';
-import { Link, Navigate, NavLink } from 'react-router-dom';
+import { Link, Navigate, NavLink, useNavigate } from 'react-router-dom';
 import { FiLogOut } from 'react-icons/fi';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -8,23 +8,24 @@ import { domain } from '../store';
 export default function NavMenu() {
   const [categories, setCategories] = useState([]);
 
-  useEffect(()=>{
+  useEffect(() => {
     let endPoint = "/api/categories";
     let url = domain + endPoint;
-    axios.get(url,{
-      params:{
+    axios.get(url, {
+      params: {
         populate: '*',
       },
-    }).then((res)=>{
-       setCategories(res.data.data);
+    }).then((res) => {
+      setCategories(res.data.data);
 
     })
-  },[]);
+  }, []);
 
   const handleLogOut = () => {
-      sessionStorage.removeItem('user');
+    sessionStorage.removeItem('user');
     localStorage.removeItem('jwt');
-    Navigate('/login');
+    const navigate = useNavigate();
+    navigate('/login');
   }
 
 
@@ -41,7 +42,7 @@ export default function NavMenu() {
         ))}
       </div>
       <div className="w-full flex justify-center py-3">
-        <FiLogOut onClick={handleLogOut()} />
+        <FiLogOut onClick={handleLogOut} />
       </div>
     </div>
   );
